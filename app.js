@@ -4,21 +4,21 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-var items = ["Meditate","Nitya Karma","Breakfast"]; //this is necessary because item is not defined globally
+let items = ["Meditate","Nitya Karma","Breakfast"]; //this is necessary because item is not defined globally
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));  // tp use body-parser we need to write this to set input from the user
 app.get("/", function (req, res) {
-    var today = new Date();
-    var options = {
+    let today = new Date();
+    let options = {
         weekday: "long",
         day: "numeric",
         month: "long",
     };
 
-    var day = today.toLocaleDateString("en-US", options);  // return day value as a string in englis US form
+    let day = today.toLocaleDateString("en-US", options);  // return day value as a string in englis US form
 
-    // var currrentDay = today.getDay();  // this is to get the todays date value sunday to saturday -->0 to 6
-    // var day = " ";
+    // let currrentDay = today.getDay();  // this is to get the todays date value sunday to saturday -->0 to 6
+    // let day = " ";
     // switch(currrentDay){
     //     case 0: 
     //     day ="Sunday";
@@ -51,12 +51,12 @@ app.get("/", function (req, res) {
     // res.send();
 
 
-    res.render("list", { kindofDay: day, newListItems: items }); //this will set the value of varaible kidofday in ejs file extention
+    res.render("list", { kindofDay: day, newListItems: items }); //this will set the value of letaible kidofday in ejs file extention
     // res.sendFile(__dirname+"/weekend.html");
 });
 
 app.post("/", function (req, res) {
-     var item = req.body.newItem;   //fetching the data from the input button after get trigger
+     let item = req.body.newItem;   //fetching the data from the input button after get trigger
     //  res.render("list",{newListItem:item}); // here we are rendering two times res.sender so we have two use intead this code nextline
     items.push(item);
     res.redirect("/");
