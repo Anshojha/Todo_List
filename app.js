@@ -4,9 +4,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-let items = ["Meditate","Nitya Karma","Breakfast"]; //this is necessary because item is not defined globally
+let items = ["Buy Food","Eat Food","cook food"]; //this is necessary because item is not defined globally
+let workItem =[];
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));  // tp use body-parser we need to write this to set input from the user
+app.use(express.static("public"));
 app.get("/", function (req, res) {
     let today = new Date();
     let options = {
@@ -51,15 +53,32 @@ app.get("/", function (req, res) {
     // res.send();
 
 
-    res.render("list", { kindofDay: day, newListItems: items }); //this will set the value of letaible kidofday in ejs file extention
+    res.render("list", { ListTitle: day, newListItems: items }); //this will set the value of letaible kidofday in ejs file extention
     // res.sendFile(__dirname+"/weekend.html");
 });
 
+app.get("/work",function(req,res){
+    res.render("list",{ListTitle:"Work List",newListItems:workItem});
+})
+
+app.post("/work",function(res,req){
+    // console.log(req.body);
+    let item = req.body.newItem;
+    workItem.push(item);
+    res.redirect("/work");
+})
 app.post("/", function (req, res) {
-     let item = req.body.newItem;   //fetching the data from the input button after get trigger
+    let item = req.body.newItem; 
+    if(req.body==="work"){
+        workItem.push(item);
+        res.redirect("/work");
+    }else{
+        items.push(item);
+        res.redirect("/");
+    }
+      //fetching the data from the input button after get trigger
     //  res.render("list",{newListItem:item}); // here we are rendering two times res.sender so we have two use intead this code nextline
-    items.push(item);
-    res.redirect("/");
+ 
 });
 app.listen(3000, function (req, res) {
     console.log("Server running at 3000");
